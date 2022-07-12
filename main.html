@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JWT Tokenizer</title>
+    <script type="text/javascript" src="app.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+</head>
+<body onload="load()">
+<div id="myform">
+    <h4>JWT Payload</h4>
+    <table>
+        <tr>
+            <td><b>Key&nbsp;&nbsp;&nbsp;&nbsp;:</b></td>
+            <td><input type="text" id="key" placeholder="username"></td>
+        </tr>
+        <tr>
+            <td><b>Value&nbsp;:</b></td>
+            <td><input type="text" id="value" placeholder="Jarvis"></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="button" id="add" value="Add" onclick="Javascript:addRow()"></td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+    <br>
+</div>
+<h4>Current data in memory</h4>
+<div id="mydata">
+    <table id="myTableData" border="1" cellpadding="2">
+        <tr>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td><b>Key&nbsp;&nbsp;&nbsp;&nbsp;</b></td>
+            <td><b>Value&nbsp;</b></td>
+        </tr>
+    </table>
+    &nbsp;
+</div>
+<br>
+<div id="myDynamicTable">
+    <form>
+        <input id="secret" name="secret" placeholder="Secret phrase.."
+               required="" type="password" style="width:20%">
+        <button id="create" value="Submit" onclick="Javascript:addTable(event)">Submit</button>
+    </form>
+</div>
+<h4>JWT Token:</h4>
+<p id="token"></p>
+</body>
+</html>
