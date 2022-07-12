@@ -4,6 +4,22 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
+<form>
+    <h2 style="color: black">JWT tokenizer</h2>
+    <fieldset style="width:40%">
+        <input id="secret" name="secret" placeholder="Secret phrase.."
+               required="" type="password" style="width:55%">
+    </fieldset>
+    <fieldset style="width:40%">
+         <textarea id="payload" name="payload" placeholder='{"username": "Jarvis"}'
+                   required="" rows="10" cols="50">{"username": "Jarvis"}</textarea>
+    </fieldset>
+    <fieldset style="width:40%">
+        <button id="form-submit" onclick="tokenize(event)" type="submit" style="text-align:center">
+            Send Now
+        </button>
+    </fieldset>
+</form>
 JWT Token: <p id="token"></p>
 <script>
 function base64url(source) {
@@ -20,15 +36,17 @@ function base64url(source) {
   return encodedSource;
 }
 
-function tokenize() {
-    var secret = "secret";
-    var data = {"username": "Jarvis"};
+function tokenize(e) {
+    e.preventDefault();
+    var secret = $("#secret").val();
+    var data = $("#payload").val();
     var header = {
       "alg": "HS256",
       "typ": "JWT"
     };
     var stringifiedHeader = CryptoJS.enc.Utf8.parse(JSON.stringify(header));
     var encodedHeader = base64url(stringifiedHeader);
+    var data = JSON.parse(data);
     var stringifiedData = CryptoJS.enc.Utf8.parse(JSON.stringify(data));
     var encodedData = base64url(stringifiedData);
     var token = encodedHeader + "." + encodedData;
@@ -37,7 +55,10 @@ function tokenize() {
     var signedToken = token + "." + signature;
     document.getElementById("token").innerHTML = signedToken;
 }
-tokenize();
+
+// https://redis.com/blog/json-web-tokens-jwt-are-dangerous-for-user-sessions/
+
+
 </script>
 </body>
 </html>
