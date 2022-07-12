@@ -1,2 +1,2 @@
-# jwt
-JWT encode and decode
+# JWT
+JWT encode using JavaScript and decode using Python
