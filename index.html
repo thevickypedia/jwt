@@ -43,12 +43,24 @@ function tokenize(e) {
     e.preventDefault();
     var secret = $("#secret").val();
     var data = $("#payload").val();
+    if (!secret) {
+        alert("Secret cannot be empty!");
+        return
+    }
+    if (!secret.trim()) {
+        alert("Secret cannot be a blank white space!");
+        return
+    }
     var header = {
       "alg": "HS256",
       "typ": "JWT"
     };
     var stringifiedHeader = CryptoJS.enc.Utf8.parse(JSON.stringify(header));
     var encodedHeader = base64url(stringifiedHeader);
+    if (!data) {
+        alert("At least one Key-Value pair is required to build the payload!");
+        return
+    }
     var data = JSON.parse(data);
     var stringifiedData = CryptoJS.enc.Utf8.parse(JSON.stringify(data));
     var encodedData = base64url(stringifiedData);

@@ -4,7 +4,11 @@ function addRow() {
     var value = document.getElementById("value");
 
     if (!key.value || !value.value) {
-        alert("Neither 'Key' nor 'Value' can be null");
+        alert("Neither 'Key' nor 'Value' can be null!");
+        return
+    }
+    if (!key.value.trim() || !value.value.trim()) {
+        alert("Neither 'Key' nor 'Value' can contain blank white spaces!");
         return
     }
 
@@ -38,6 +42,14 @@ function tableCells(t){
 function addTable(e) {
     e.preventDefault();
     var secret = $("#secret").val();
+    if (!secret) {
+        alert("Secret cannot be empty!");
+        return
+    }
+    if (!secret.trim()) {
+        alert("Secret cannot be a blank white space!");
+        return
+    }
     var table = document.getElementById("myTableData");
 //    for (var i = 0, row; row = table.rows[i]; i++) {
 //        console.log(row.innerHTML);
@@ -49,6 +61,10 @@ function addTable(e) {
     for (var i = 3, cell; cell = tableCells(table)[i]; i++) {
         if (i === 3 || i % 3 == 0 ) { continue; }
         array.push(cell.innerHTML);
+    }
+    if (array.length < 2) {
+        alert("At least one Key-Value pair is required to build the payload!");
+        return
     }
     var dict = {}
     for (var j = 0; j < array.length - 1; j++) {
@@ -84,7 +100,6 @@ function tokenize(secret, payload) {
     };
     var stringifiedHeader = CryptoJS.enc.Utf8.parse(JSON.stringify(header));
     var encodedHeader = base64url(stringifiedHeader);
-    console.log(payload);
     var stringifiedData = CryptoJS.enc.Utf8.parse(JSON.stringify(payload));
     var encodedData = base64url(stringifiedData);
     var token = encodedHeader + "." + encodedData;
