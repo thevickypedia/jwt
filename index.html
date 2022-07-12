@@ -1,29 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JWT Tokenizer</title>
+    <title>JWT Encode and Decode using JS</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 </head>
 <body>
-<h2 style="text-align:center">JWT Tokenizer</h2>
+<h2 style="text-align:center">JWT Encoder</h2>
 <form>
+    <h4>Secret</h4>
     <fieldset style="width:40%">
         <input id="secret" name="secret" placeholder="Secret"
                required="" type="password" style="width:50%">
     </fieldset>
+    <h4>Payload</h4>
     <fieldset style="width:40%">
          <textarea id="payload" name="payload" placeholder='{"username": "Jarvis"}'
                    required="" style="width:50%">{"username": "Jarvis"}</textarea>
     </fieldset>
     <fieldset style="width:40%">
         <button id="form-submit" onclick="tokenize(event)" type="submit" style="text-align:center">
-            Send Now
+            Submit
         </button>
     </fieldset>
 </form>
-<h4>JWT Token:</h4>
-<p id="token"></p>
+<h4 id="encoded">Encoded JWT</h4>
+<h2 style="text-align:center">JWT Decoder</h2>
+<form>
+    <fieldset style="width:40%">
+         <textarea id="encoded_token" name="encoded_token" required="" style="width:50%"></textarea>
+    </fieldset>
+    <fieldset style="width:40%">
+        <button id="submit" onclick="parseJWT(event)" type="submit" style="text-align:center">
+            Submit
+        </button>
+    </fieldset>
+</form>
+<h4 id="decoded">Decoded JWT</h4>
 <script>
 function base64url(source) {
   // Encode in classical base64
@@ -51,24 +64,41 @@ function tokenize(e) {
         alert("Secret cannot be a blank white space!");
         return
     }
+    if (!data) {
+        alert("At least one Key-Value pair is required to build the payload!");
+        return
+    }
+    var data = JSON.parse(data);
+
     var header = {
       "alg": "HS256",
       "typ": "JWT"
     };
     var stringifiedHeader = CryptoJS.enc.Utf8.parse(JSON.stringify(header));
     var encodedHeader = base64url(stringifiedHeader);
-    if (!data) {
-        alert("At least one Key-Value pair is required to build the payload!");
-        return
-    }
-    var data = JSON.parse(data);
     var stringifiedData = CryptoJS.enc.Utf8.parse(JSON.stringify(data));
     var encodedData = base64url(stringifiedData);
     var token = encodedHeader + "." + encodedData;
     var signature = CryptoJS.HmacSHA256(token, secret);
     signature = base64url(signature);
     var signedToken = token + "." + signature;
-    document.getElementById("token").innerHTML = signedToken;
+    document.getElementById("encoded").innerHTML = signedToken;
+}
+
+function parseJWT (e) {
+    e.preventDefault();
+    var token = $("#encoded_token").val().trim();
+    if (!token) {
+        alert("Token cannot be null!");
+        return
+    }
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    document.getElementById("decoded").innerHTML = jsonPayload;
+    // console.log(JSON.parse(jsonPayload));
 }
 </script>
 </body>

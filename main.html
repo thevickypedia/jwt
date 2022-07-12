@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JWT Tokenizer</title>
+    <title>JWT Encode and Decode using JS</title>
     <script type="text/javascript" src="app.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 </head>
 <body onload="load()">
-<h2 style="text-align:center">JWT Tokenizer</h2>
+<h2 style="text-align:center">JWT Encoder</h2>
 <div id="myform">
     <h4>Payload</h4>
     <table>
@@ -46,7 +46,19 @@
         <button id="create" value="Submit" onclick="Javascript:addTable(event)">Submit</button>
     </form>
 </div>
-<h4>JWT Token:</h4>
-<p id="token"></p>
+<h4 id="encoded">Encoded JWT</h4>
+<h2 style="text-align:center">JWT Decoder</h2>
+<form>
+    <h4>Encoded JWT</h4>
+    <fieldset style="width:40%">
+         <textarea id="encoded_token" name="encoded_token" required="" style="width:50%"></textarea>
+    </fieldset>
+    <fieldset style="width:40%">
+        <button id="submit" onclick="Javascript:parseJWT(event)" type="submit" style="text-align:center">
+            Submit
+        </button>
+    </fieldset>
+</form>
+<h4 id="decoded">Decoded JWT</h4>
 </body>
 </html>
