@@ -1,18 +1,20 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+    <title>JWT Tokenizer</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 </head>
 <body>
+<h2 style="text-align:center">JWT Tokenizer</h2>
 <form>
-    <h2 style="color: black">JWT tokenizer</h2>
     <fieldset style="width:40%">
-        <input id="secret" name="secret" placeholder="Secret phrase.."
-               required="" type="password" style="width:55%">
+        <input id="secret" name="secret" placeholder="Secret"
+               required="" type="password" style="width:50%">
     </fieldset>
     <fieldset style="width:40%">
          <textarea id="payload" name="payload" placeholder='{"username": "Jarvis"}'
-                   required="" rows="10" cols="50">{"username": "Jarvis"}</textarea>
+                   required="" style="width:50%">{"username": "Jarvis"}</textarea>
     </fieldset>
     <fieldset style="width:40%">
         <button id="form-submit" onclick="tokenize(event)" type="submit" style="text-align:center">
@@ -20,7 +22,8 @@
         </button>
     </fieldset>
 </form>
-JWT Token: <p id="token"></p>
+<h4>JWT Token:</h4>
+<p id="token"></p>
 <script>
 function base64url(source) {
   // Encode in classical base64
@@ -55,10 +58,6 @@ function tokenize(e) {
     var signedToken = token + "." + signature;
     document.getElementById("token").innerHTML = signedToken;
 }
-
-// https://redis.com/blog/json-web-tokens-jwt-are-dangerous-for-user-sessions/
-
-
 </script>
 </body>
 </html>
