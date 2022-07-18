@@ -12,7 +12,16 @@ function addRow() {
         return
     }
 
-    var table = document.getElementById("myTableData");
+    var table = document.getElementById("tableData");
+    // Check for duplicate Key before adding it to the table memory
+    for (let i = 0; i < table.rows.length; i++)
+        {
+            let existing = table.rows[i].cells[1].innerHTML;
+            if (key.value === existing) {
+                alert(`Key '${key.value}' already exists!`)
+                return
+            }
+        }
 
     var rowCount = table.rows.length;
     var row = table.insertRow(rowCount);
@@ -26,7 +35,7 @@ function addRow() {
 function deleteRow(obj) {
 
     var index = obj.parentNode.parentNode.rowIndex;
-    var table = document.getElementById("myTableData");
+    var table = document.getElementById("tableData");
     table.deleteRow(index);
 
 }
@@ -50,7 +59,7 @@ function addTable(e) {
         alert("Secret cannot be a blank white space!");
         return
     }
-    var table = document.getElementById("myTableData");
+    var table = document.getElementById("tableData");
 //    for (var i = 0, row; row = table.rows[i]; i++) {
 //        console.log(row.innerHTML);
 //       for (var j = 0, col; col = row.cells[j]; j++) {
@@ -69,7 +78,13 @@ function addTable(e) {
     var dict = {}
     for (var j = 0; j < array.length - 1; j++) {
         if (j === 0 || j % 2 == 0 ) {
-            dict[array[j]] = array[j+1]
+            // Check for duplicate Key in the dict when submitted
+            if (!(array[j] in dict)){
+                dict[array[j]] = array[j+1]
+            } else {
+                alert(`Key '${array[j]}' already exists.`);
+                return
+            }
         }
     }
     tokenize(secret, dict);
