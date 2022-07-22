@@ -8,7 +8,7 @@ function addRow() {
         return
     }
     if (!key.value.trim() || !value.value.trim()) {
-        alert("Neither 'Key' nor 'Value' can contain blank white spaces!");
+        alert("Neither 'Key' nor 'Value' can be blank white spaces!");
         return
     }
 
@@ -28,8 +28,21 @@ function addRow() {
 
     row.insertCell(0).innerHTML= '<input type="button" value = "Delete" onClick="Javacsript:deleteRow(this)">';
     row.insertCell(1).innerHTML= key.value;
-    row.insertCell(2).innerHTML= value.value;
+    if (key.value === "password") {
+        var hide_value = `<input type="password" value='${value.value}' id="hide"><input type="checkbox" onclick="hide()">Show`
+    } else {
+        var hide_value = value.value;
+    }
+    row.insertCell(2).innerHTML = hide_value;
+}
 
+function hide() {
+  var x = document.getElementById("hide");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
 }
 
 function deleteRow(obj) {
@@ -69,7 +82,11 @@ function addTable(e) {
     var array = [];
     for (var i = 3, cell; cell = tableCells(table)[i]; i++) {
         if (i === 3 || i % 3 == 0 ) { continue; }
-        array.push(cell.innerHTML);
+        if (cell.innerHTML.startsWith('<input type="password" value=')) {
+            array.push(document.getElementById("hide").value);
+        } else {
+            array.push(cell.innerHTML);
+        }
     }
     if (array.length < 2) {
         alert("At least one Key-Value pair is required to build the payload!");
